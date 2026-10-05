@@ -1,0 +1,33 @@
+PatchPro 2 - License for the distributed application
+
+Copyright (c) 2026 Nelson Bernard. All rights reserved.
+
+PatchPro 2 is free to use. Permission is granted, free of charge, to any person to
+download, install and use the PatchPro 2 application as published at
+https://github.com/nelsonbernard/patchpro2-releases, for personal or commercial purposes,
+under these conditions:
+
+1. Redistribution. You may not redistribute, sell, rent, lease, sublicense or publish
+   the application or copies of it. To share PatchPro 2, link to the official download
+   page instead.
+
+2. Modification. You may not modify, decompile, disassemble or reverse engineer the
+   application, except to the extent that applicable law expressly permits this
+   despite this limitation.
+
+3. Notices. You may not remove or alter copyright, trademark or license notices.
+
+4. Third-party components. The application includes third-party software, licensed under
+   its own terms; see the notices distributed with the application (for example
+   LICENSE.electron.txt and LICENSES.chromium.html). Nothing in this license limits your
+   rights under those terms.
+
+5. No warranty. THE APPLICATION IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHOR BE
+   LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE APPLICATION OR THE
+   USE OR OTHER DEALINGS IN THE APPLICATION.
+
+All rights not expressly granted here are reserved. These terms apply to the versions
+published with them; future versions may come with different terms.
