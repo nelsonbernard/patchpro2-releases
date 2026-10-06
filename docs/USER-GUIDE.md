@@ -116,8 +116,8 @@ each app's own device choice and the default devices you had when it started
 | **Title bar** | <ul><li>The **scenes menu** (shows the active scene, or "Current setup").</li><li>The **view switcher**: Graph, Console, Matrix.</li><li>Live audio stats: **Rate** (sample rate), **Buffer** (samples per cycle), **Latency** (buffer time).</li><li>The **engine status** (Running, Starting, Restarting, Waiting, Failed; hover for details).</li><li>The **Settings** gear and the window buttons.</li></ul> |
 | **Device list** (left) | Every device grouped as Inputs, Virtual sinks and Outputs, with a live level bar. "DEFAULT" marks the system default output and input; a red speaker icon marks a muted device. Click a device to select it. **New virtual sink** at the bottom. |
 | **Main area** | The current view: Graph, Console or Matrix ([The three views](#8-the-three-views)). |
-| **Inspector** (right) | Details and controls for the selected device or cable ([The inspector](#9-the-inspector)). With nothing selected: a color legend and the keyboard shortcuts. |
-| **Status bar** (bottom) | How many devices and routes there are, how many routes are carrying sound right now, and a hint for the current view. |
+| **Inspector** (right) | Slides in over the right side when you select a device or cable, with its details and controls ([The inspector](#9-the-inspector)). Hidden when nothing is selected, so the view uses the whole window. |
+| **Status bar** (bottom) | How many devices and routes there are, how many routes are carrying sound right now, and a hint for the current view. The **?** at the right shows the color legend and the keyboard shortcuts. |
 
 If the audio engine is not running, a banner under the title bar says why and what to do
 ([Troubleshooting](#20-troubleshooting)). Double-click empty space in the title bar to maximize or restore the
@@ -137,9 +137,10 @@ Apps appear and disappear as they start and stop. PatchPro remembers their route
 restarts goes back where it was.
 
 **Hiding devices:** select a device you don't use and click **Hide this device** at the bottom of the
-inspector. It disappears from every view, and its routes are removed (a hidden device carries no sound).
-Hidden devices are listed under **Hidden** at the bottom of the device list; click one there to show it again.
-**Windows:** Voicemeeter's devices start hidden.
+inspector. It disappears from every view, and its routes are **paused**: they stay part of your setup but carry
+no sound. Hidden devices are listed under **Hidden** at the bottom of the device list; click one there to show
+it again, and its routes play again. Each scene has its own hidden devices
+([Scenes](#13-scenes)). **Windows:** Voicemeeter's devices start hidden.
 
 ## 6. Routing audio
 
@@ -217,7 +218,9 @@ sink into itself). Rows and columns have their own faders and mute buttons. **+ 
 
 ![The inspector with a virtual sink selected](images/inspector.png)
 
-Select a device (click its card, its name in the device list, or its row/strip) to see and change:
+Select a device (click its card, its name in the device list, or its row/strip) and the inspector slides in over
+the right side of the window; the view underneath doesn't move. Close it with **✕**, **Esc**, or a click on empty
+space. It shows and changes:
 
 | Section | What it does |
 |---|---|
@@ -226,11 +229,11 @@ Select a device (click its card, its name in the device list, or its row/strip) 
 | **Spectrum** | A larger live spectrum (20 Hz to 20 kHz). |
 | **Gain** | Volume fader and mute button. |
 | **Default output / Default input** | For outputs, virtual sinks and inputs: **Set as default** makes it the system default (see [Default devices](#12-default-devices)). **Windows:** also **Use for communications**. |
-| **Streams** | For apps: the **One device per stream** switch (**Windows:** One device per process; see [Apps and browser tabs](#11-apps-and-browser-tabs)). |
+| **Streams** | For apps: the **One device per stream** switch (not on Windows; see [Apps and browser tabs](#11-apps-and-browser-tabs)). |
 | **Restart *app* to apply its routes** | **Windows**, for apps that chose a fixed device: they move only when they start again. |
 | **Receives from / Sends to** | Every route into and out of the device. Click **×** to remove one. |
 | **Delete virtual sink** | For virtual sinks: removes it and its routes (not on Windows). |
-| **Hide this device** | Hides the device and removes its routes (see [Devices](#5-devices)). |
+| **Hide this device** | Hides the device and pauses its routes (see [Devices](#5-devices)). |
 
 Click a cable to select a route; press **Delete** to remove it. **Esc** clears the selection.
 
@@ -279,8 +282,10 @@ to your stream mix.
 **New apps** start on your default output (recording apps listen to your default input). Change the default to
 change where new apps go.
 
-**Windows:** an app appears once it plays or records (or when you route it). The switch is **One device per
-process**: it shows each of the app's processes with its own volume, but they are still routed together.
+**Windows:** an app appears once it plays or records (or when you route it). There is no **One device per
+stream** switch: Windows routes all of an app's audio together (it keeps one device choice per program), and
+browsers play every tab through one process. An app split by an earlier version still shows the switch, so you can
+turn it off.
 
 ## 12. Default devices
 
@@ -300,7 +305,9 @@ they were when it started.
 ![The scenes menu](images/scenes.png)
 
 A **scene** is a complete setup: your virtual sinks, every route, the volume and mute of every device (hardware
-included), which apps are split per stream, and the default devices.
+included), which apps are split per stream and the default devices, plus how it looks: the **hidden devices**,
+where the **cards** are, and the **view** (Graph, Console or Matrix). Each scene is its own: hide a device or
+move cards in one scene, and your other scenes stay as they are.
 
 ### The current setup is always saved
 
@@ -314,12 +321,14 @@ Open the scenes menu in the title bar (it shows the active scene's name, or "Cur
 
 - **Save:** type a name in "Save current setup as…" and click **Save**. Saving under an existing name replaces
   that scene.
-- **Load:** click a scene. PatchPro creates or removes virtual sinks, changes routes and sets volumes to match. A
-  checkmark shows the active scene. You can also switch scenes from the tray menu.
-- **Hover a scene for more:**
-  - **update** it with the current setup (save icon);
-  - **rename** it (pencil);
-  - **delete** it (trash, then confirm).
+- **Load:** click a scene. PatchPro creates or removes virtual sinks, changes routes, sets volumes, and switches
+  to the scene's hidden devices, card positions and view. A checkmark shows the active scene. You can also switch
+  scenes from the tray menu.
+- **Changes go into a scene only when you save them.** After you load a scene and change something, a dot (•)
+  next to its name in the title bar shows it has unsaved changes. To keep them, click the **save icon** right
+  beside the name (or **Update** in the menu); with no scene active, the save icon asks for a name. Or **save
+  as** a new name: the new scene becomes the active one, and the scene you started from stays exactly as it was.
+  **Windows:** default devices don't count for the dot, since Windows' own settings change them.
 
 What to expect when loading:
 
@@ -619,7 +628,7 @@ Run anyway**.
 - **Apps appear once they play or record** (Windows keeps silent sessions for many apps), or when you route them.
   System sounds follow the default output and can't be routed.
 - **Voicemeeter's devices are hidden** by default (there are many). Show them from the sidebar's **Hidden** list.
-  Hiding a device also removes its routes.
+  Hiding a device pauses its routes.
 
 ### Quitting, crashes and your Windows settings
 

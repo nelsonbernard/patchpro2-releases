@@ -47,7 +47,7 @@ While it runs, it is the router; when you quit it, your system's normal routing 
 - **Routing:** drag a cable from any source to any destination, fan out to several outputs, mix several sources
   into one. Mono and stereo are matched automatically, and feedback loops are refused.
 - **Apps as devices:** every app that plays or records audio appears on its own and can be routed like a device.
-  A browser can be shown as one device per tab. New apps start on your default output (or default input for
+  A browser can be shown as one device per tab (Linux). New apps start on your default output (or default input for
   recording apps).
 - **Virtual sinks:** software devices you create, rename and route. They live while PatchPro runs and come back
   with your setup. (On Windows: one virtual sink through the free VB-Audio Virtual Cable.)

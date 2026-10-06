@@ -9,6 +9,40 @@ What changed in each PatchPro 2 release. The newest version is at the top. Downl
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-06
+
+Every scene now keeps its own look, hiding a device no longer loses its routes, and the window makes better use
+of its space.
+
+### New
+
+- **Each scene keeps its own look:** hidden devices, card positions and the view (Graph, Console, Matrix) are
+  saved with each scene and switch when you load it, along with its routes, volumes and mutes.
+- **Unsaved changes are visible:** a dot (•) next to the scene name in the title bar shows the setup differs from
+  the active scene; the **save icon** beside it saves the changes in one click (with no scene active, it asks for
+  a name). Saving as a new scene leaves the scene you started from as it was.
+- **More room:** the inspector is hidden when nothing is selected and slides in over the right side when you
+  select a device or cable (close it with ✕, Esc or a click on empty space). The color legend and shortcuts moved
+  to the **?** in the status bar.
+
+### Changed
+
+- **Hiding a device pauses its routes** instead of removing them: they stay in your setup and scenes, carry no
+  sound while the device is hidden, and play again when you show it.
+- **Matrix view:** every destination column has the same width; a long device name wraps to two lines instead of
+  widening its column, so the crosspoints line up under their device.
+- **Windows:** the "One device per process" switch is gone (Windows routes an app's processes together, and
+  browsers use one audio process); an app split earlier still shows it so you can turn it off.
+
+### Fixed
+
+- **Narrow windows:** the title bar no longer wraps or overflows; below 1280 px it hides Rate, Buffer and
+  Latency, below 1100 px the view buttons show only their icons, and the window buttons always stay visible.
+- **Windows:** hiding an app, or every device it plays to, now silences it (it kept playing on the default
+  output), in the patchbay and when loading a scene; showing it again brings the sound back.
+- **Windows:** an app PatchPro silences because it has no route is no longer reported, autosaved or saved in a
+  scene as muted, so it is not left muted once it has a route again.
+
 ## [0.3.0] - 2026-10-06
 
 PatchPro now runs on **Windows 10 (22H2) and Windows 11** as well as Linux.
