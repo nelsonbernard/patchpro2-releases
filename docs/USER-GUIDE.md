@@ -1,8 +1,11 @@
 # PatchPro 2 User Guide
 
-PatchPro 2 is a patchbay for your Linux desktop's audio. It shows every source of sound (microphones, apps)
+PatchPro 2 is a patchbay for your desktop's audio, on Linux (PipeWire) and Windows 10/11. It shows every source of sound (microphones, apps)
 and every destination (headphones, speakers, HDMI), and lets you connect them with cables, mix them in
 virtual sinks, set volumes, and save the whole setup as scenes.
+
+Everything in this guide applies to both systems. Where Windows differs, a **Windows:** note says so, and
+[PatchPro on Windows](#22-patchpro-on-windows) covers installing and how routing works there.
 
 **Contents**
 
@@ -27,12 +30,16 @@ virtual sinks, set volumes, and save the whole setup as scenes.
 19. [Desktop support](#desktop-support)
 20. [Troubleshooting](#20-troubleshooting)
 21. [Uninstalling](#21-uninstalling)
+22. [PatchPro on Windows](#22-patchpro-on-windows)
 
 ---
 
 ## 1. Before you start
 
-PatchPro needs:
+> **On Windows?** Everything in this guide applies, with the differences listed in
+> [PatchPro on Windows](#22-patchpro-on-windows) (requirements, installing, how routing works there).
+
+On Linux, PatchPro needs:
 
 - **64-bit Linux** with **PipeWire** (the sound server) and **WirePlumber** (its session manager) running. They
   are the default on most current distributions. To check, run:
@@ -48,6 +55,7 @@ PatchPro **controls the routing** of your system's audio. It does not add effect
 ## 2. Installing
 
 Download the latest release from the [Releases page](https://github.com/nelsonbernard/patchpro2-releases/releases/latest).
+For Windows, see [Installing on Windows](#installing-on-windows).
 
 ### AppImage (any distribution)
 
@@ -95,6 +103,10 @@ setup ([Scenes](#13-scenes)).
 > A brand-new app may be heard on the default device for a split second before PatchPro routes it. That's
 > expected.
 
+**Windows:** apps you never routed keep following Windows' default devices. When PatchPro quits, it puts back
+each app's own device choice and the default devices you had when it started
+([details](#quitting-crashes-and-your-windows-settings)).
+
 ## 4. The window
 
 ![The main window](images/graph.png)
@@ -124,6 +136,11 @@ PatchPro shows three kinds of devices. Their colors follow you through every vie
 Apps appear and disappear as they start and stop. PatchPro remembers their routes and volume, so an app that
 restarts goes back where it was.
 
+**Hiding devices:** select a device you don't use and click **Hide this device** at the bottom of the
+inspector. It disappears from every view, and its routes are removed (a hidden device carries no sound).
+Hidden devices are listed under **Hidden** at the bottom of the device list; click one there to show it again.
+**Windows:** Voicemeeter's devices start hidden.
+
 ## 6. Routing audio
 
 A **route** is a cable from a source to a destination: sound flows from the left card's right port into the right
@@ -149,6 +166,7 @@ hear nothing, check that it has a cable.
   volume, and the scale matches your desktop's volume sliders.
   - Hardware with its own volume control (many USB headsets and microphones) is set on the device itself, so the
     change also shows in your system sound settings.
+  - **Windows:** the readout is in percent, like Windows' own volume sliders.
 - **Mute:** click the speaker button next to a fader, or select a device and press **M**. Muted devices show a
   red icon.
 - **Meters:** level bars and a **spectrum** (32 bands from 20 Hz to 20 kHz) show the sound actually flowing
@@ -158,6 +176,8 @@ hear nothing, check that it has a cable.
     recordings are listed in your desktop's sound settings under **"PatchPro 2"** as **"Meter: *device*"**, and
     they can make the "microphone in use" indicator appear. Settings › Privacy can hide them
     ([Settings](#16-settings-reference)).
+  - **Windows:** the recordings aren't listed anywhere, but Windows may show its microphone icon while the window
+    is visible. There is no Privacy setting.
 
 ## 8. The three views
 
@@ -205,10 +225,12 @@ Select a device (click its card, its name in the device list, or its row/strip) 
 | **Device / Format / Level** | What it is (hardware name, "Application", "Virtual sink"), sample rate and channels, and the current level. |
 | **Spectrum** | A larger live spectrum (20 Hz to 20 kHz). |
 | **Gain** | Volume fader and mute button. |
-| **Default output / Default input** | For outputs, virtual sinks and inputs: **Set as default** makes it the system default (see [Default devices](#12-default-devices)). |
-| **Streams** | For apps: the **One device per stream** switch (see [Apps and browser tabs](#11-apps-and-browser-tabs)). |
+| **Default output / Default input** | For outputs, virtual sinks and inputs: **Set as default** makes it the system default (see [Default devices](#12-default-devices)). **Windows:** also **Use for communications**. |
+| **Streams** | For apps: the **One device per stream** switch (**Windows:** One device per process; see [Apps and browser tabs](#11-apps-and-browser-tabs)). |
+| **Restart *app* to apply its routes** | **Windows**, for apps that chose a fixed device: they move only when they start again. |
 | **Receives from / Sends to** | Every route into and out of the device. Click **×** to remove one. |
-| **Delete virtual sink** | For virtual sinks: removes it and its routes. |
+| **Delete virtual sink** | For virtual sinks: removes it and its routes (not on Windows). |
+| **Hide this device** | Hides the device and removes its routes (see [Devices](#5-devices)). |
 
 Click a cable to select a route; press **Delete** to remove it. **Esc** clears the selection.
 
@@ -237,6 +259,10 @@ How to:
 
 Virtual sinks exist only while PatchPro runs. When PatchPro starts, it recreates them from your saved setup.
 
+**Windows:** virtual sinks need [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) (free) installed. PatchPro
+shows it as **one** virtual sink: you can rename it, set its volume and route into and out of it, but not create
+or delete virtual sinks. Other apps see it as "CABLE Input" (to play into) and "CABLE Output" (to record from).
+
 ## 11. Apps and browser tabs
 
 Every app that plays sound appears as an **input**, and every app that records appears as an **output**. An app
@@ -253,6 +279,9 @@ to your stream mix.
 **New apps** start on your default output (recording apps listen to your default input). Change the default to
 change where new apps go.
 
+**Windows:** an app appears once it plays or records (or when you route it). The switch is **One device per
+process**: it shows each of the app's processes with its own volume, but they are still routed together.
+
 ## 12. Default devices
 
 The **default output** is where new apps play; the **default input** is what new recording apps listen to. These
@@ -261,6 +290,10 @@ around.
 
 Set them in the inspector (**Set as default output** / **Set as default input**). A virtual sink can be the
 default output. "DEFAULT" in the device list marks the current ones.
+
+**Windows:** there is also a **communications** output and input, which voice chat apps use. Set them with **Use
+for communications**; a "comms" badge marks them. When PatchPro quits, Windows' default devices go back to what
+they were when it started.
 
 ## 13. Scenes
 
@@ -298,10 +331,13 @@ What to expect when loading:
   playing into.
 - If part of a scene can't be applied (for example a route that would make a loop), the rest is applied and a
   message says what was skipped.
+- **Windows:** a scene stores only the routes you made (apps you never touched keep following Windows' defaults).
+  Restoring the last setup at start-up leaves Windows' default devices alone; loading a scene by name sets them.
 
 ## 14. The tray icon
 
-PatchPro puts an icon (orange waveform) in your system tray:
+PatchPro puts an icon (orange waveform) in your system tray (**Windows:** the taskbar's notification area; it may
+be under the **^** arrow until you drag it out):
 
 - **Left-click:** show or hide the window.
 - **Right-click** opens the menu:
@@ -330,6 +366,8 @@ is hidden. It's handy as a push-to-mute for your microphone.
 Each press toggles the device and shows a short notification ("Yeti Mic muted"); the tray icon changes too. The
 status line under the shortcut says whether it's **Active**.
 
+**Windows:** the shortcut works right away; there is nothing to confirm.
+
 On Wayland the **desktop owns global shortcuts**. If you change the key in your desktop's settings (KDE: System
 Settings › Shortcuts › PatchPro 2), that key wins, and PatchPro's Settings shows the key the desktop actually
 uses.
@@ -343,12 +381,12 @@ Open Settings with the gear in the title bar. Changes apply and are saved immedi
 | Setting | Default | What it does |
 |---|---|---|
 | **Startup › Restore the last setup when PatchPro starts** | On | Virtual sinks, routes and volumes come back as you left them. Off: PatchPro starts from the system's current routing (your saved scenes are kept). |
-| **Startup › Start PatchPro when you log in** | Off | Adds PatchPro to your desktop's autostart (`~/.config/autostart/app.patchpro2.desktop`). Only in the installed app; a development build shows it disabled. |
+| **Startup › Start PatchPro when you log in** | Off | Adds PatchPro to your desktop's autostart (`~/.config/autostart/app.patchpro2.desktop`; **Windows:** "PatchPro 2" in Settings › Apps › Startup). Only in the installed app; a development build shows it disabled. |
 | **Startup › Start minimized to the tray** | Off | PatchPro starts with the window hidden; open it from the tray icon or by launching PatchPro again. Ignored if there is no tray. |
 | **Window › Close button hides to the tray** | On | ✕ hides the window and routing keeps running; quit from the tray. Off: ✕ quits and the system takes routing back. |
 | **Mute › Device the tray and the mute hotkey toggle** | Default input | The device for the tray's Mute item and the hotkey. App streams are not offered (they come and go). |
 | **Mute › Mute hotkey** | None | A global shortcut for that device ([The mute hotkey](#15-the-mute-hotkey)). |
-| **Privacy › Hide meter streams from system sound settings** | Off | Marks PatchPro's meter recordings the way system mixers mark theirs, so KDE's and GNOME's sound settings don't list them. This also hides PatchPro from the "microphone in use" indicator. |
+| **Privacy › Hide meter streams from system sound settings** (Linux) | Off | Marks PatchPro's meter recordings the way system mixers mark theirs, so KDE's and GNOME's sound settings don't list them. This also hides PatchPro from the "microphone in use" indicator. |
 | **Updates › Tell me when a new version is available** | On | Asks GitHub once a day for the latest release. Nothing about you or your setup is sent. PatchPro never updates itself; a notice and a tray item link to the download. |
 | **About** | | The version, the license, **Copy diagnostics** (a report for bug reports, copied to the clipboard) and **Open log folder**. |
 
@@ -367,6 +405,8 @@ Open Settings with the gear in the title bar. Changes apply and are saved immedi
 | Mute hotkey | Your shortcut from Settings › Mute, from anywhere |
 
 ## 18. Where PatchPro keeps its files
+
+**Windows:** see [Files and uninstalling](#files-and-uninstalling).
 
 Everything is in `~/.config/PatchPro 2/`:
 
@@ -407,6 +447,8 @@ Ubuntu 24.04's default) have not been tested yet.
 When something goes wrong, **Settings › About › Copy diagnostics** puts a report on your clipboard. It contains
 versions, your settings and recent log lines; device and app names may appear in it. Paste it into a bug report.
 The full log is under **Open log folder**.
+
+**Windows:** see also [Troubleshooting on Windows](#troubleshooting-on-windows).
 
 ### "Waiting for PipeWire: the sound server is not running."
 
@@ -515,6 +557,8 @@ happened, and paste **Copy diagnostics** from Settings › About.
 
 ## 21. Uninstalling
 
+**Windows:** see [Files and uninstalling](#files-and-uninstalling).
+
 1. Turn off **Start at login** in Settings (if you turned it on), then quit PatchPro from the tray.
 2. Remove the app:
    - **AppImage:** delete the file.
@@ -528,3 +572,88 @@ happened, and paste **Copy diagnostics** from Settings › About.
 
 Your system's own audio routing is not changed by uninstalling: once PatchPro isn't running, the system routes
 audio as it normally does.
+
+## 22. PatchPro on Windows
+
+### Requirements
+
+- **Windows 10 22H2 or Windows 11**, 64-bit (x64).
+- For a virtual sink: **[VB-Audio Virtual Cable](https://vb-audio.com/Cable/)** (free) installed. Without it,
+  everything else works; you just have no virtual sink.
+- **Voicemeeter is not needed.** PatchPro does the routing itself. It hides Voicemeeter's many devices and avoids
+  conflicts with them, but we recommend uninstalling Voicemeeter (Settings › Apps › Installed apps) so two
+  routers don't fight over your audio. Keep **VB-Audio Virtual Cable**: it's a separate product, and PatchPro
+  uses it as its virtual sink.
+
+### Installing on Windows
+
+Download from the [Releases page](https://github.com/nelsonbernard/patchpro2-releases/releases/latest):
+
+- **`PatchPro2-Setup-…-x64.exe`:** installs PatchPro for your user (no administrator rights, no questions) and
+  adds it to the Start menu and the desktop. Running a newer setup updates it in place; your settings stay.
+- **`PatchPro2-…-x64-portable.zip`:** right-click › **Extract All**, then run `patchpro2.exe` from the folder.
+  Nothing is installed; settings are kept in the same place as for the installed app.
+
+The files are not signed yet, so **Windows SmartScreen** may say it "protected your PC". Click **More info ›
+Run anyway**.
+
+### How routing works on Windows
+
+- **An app to one output:** PatchPro sets the app's own output device, the same setting as Windows' Settings ›
+  Sound › Volume mixer. Windows moves the app itself, with no added delay.
+- **An app to several outputs, microphones to outputs, the virtual sink to outputs:** PatchPro copies the audio
+  itself. Copies are heard about 60 ms after the app's own output (through the virtual cable, about 110 ms):
+  fine for streaming and monitoring, noticeable if you listen to both at once.
+- **An app with no routes** is muted (Windows has no "nowhere" device).
+- **Apps that choose a fixed device** (some games and voice apps) only move when they restart. PatchPro marks
+  them with **Restart the app to apply**.
+- **Recording:** an app records from one device (an input or the virtual sink). To give an app a mix, route the
+  sources into the virtual sink and the virtual sink into the app.
+
+### Differences from Linux
+
+- **One virtual sink:** VB-Cable is shown as one virtual sink (its two sides as one device). You can rename it,
+  set its volume and route through it; you can't create or remove virtual sinks.
+- **Volumes are in percent**, like Windows' own sliders.
+- **Default devices** include the **communications** output and input (used by calls) besides the normal ones.
+- **Apps appear once they play or record** (Windows keeps silent sessions for many apps), or when you route them.
+  System sounds follow the default output and can't be routed.
+- **Voicemeeter's devices are hidden** by default (there are many). Show them from the sidebar's **Hidden** list.
+  Hiding a device also removes its routes.
+
+### Quitting, crashes and your Windows settings
+
+When PatchPro quits, it puts back each app's own device choice, unmutes what it muted, and restores the default
+devices you had when it started. If PatchPro crashes, a small helper does the same within seconds, and later for
+apps that start afterwards (Windows only lets a running app's choice be changed). If an app still plays on the
+wrong device, set it back in Settings › Sound › Volume mixer (or "Reset" there).
+
+### Files and uninstalling
+
+Settings, scenes, layout and logs are in `%APPDATA%\PatchPro 2\` (`settings.json`, `scenes-wasapi.json`,
+`project.json`, `logs\patchpro.log`; `engine-journal.json` exists only while PatchPro has changes to put back).
+
+- **Installed:** Settings › Apps › Installed apps › **PatchPro 2** › Uninstall. It quits PatchPro (which puts your
+  audio back), removes the app, its start-at-login entry and its notification registration. Your settings stay in
+  `%APPDATA%\PatchPro 2\`; delete that folder for a clean slate.
+- **Portable:** turn off Start at login first if you used it, quit PatchPro from the tray, and delete the folder.
+  Windows also keeps a Start menu shortcut for its notifications: delete "PatchPro 2" from
+  `%APPDATA%\Microsoft\Windows\Start Menu\Programs\`.
+
+### Troubleshooting on Windows
+
+- **SmartScreen blocks the setup or the app:** click **More info › Run anyway** (the files are not signed yet).
+- **No virtual sink:** install [VB-Audio Virtual Cable](https://vb-audio.com/Cable/), restart your PC if its
+  installer asks, then start PatchPro again.
+- **An app doesn't move when you route it:** if its card says **Restart *app* to apply its routes**, the app chose
+  a fixed device; close and reopen it. Some apps have their own output setting (games, Discord's voice settings):
+  set it to "Default" there so PatchPro can move them.
+- **An app is silent:** an app with no routes is muted on Windows. Give it a route, or quit PatchPro to let Windows
+  play it normally.
+- **An app plays on the wrong device after PatchPro quit:** Settings › System › Sound › Volume mixer shows each
+  app's output device; set it back to "Default", or use **Reset** there.
+- **I don't see my Voicemeeter devices:** they start hidden; open **Hidden** at the bottom of the device list.
+  PatchPro doesn't need Voicemeeter; we recommend uninstalling it and keeping VB-Audio Virtual Cable
+  ([Requirements](#requirements)).
+- **No tray icon:** it may be under the **^** arrow in the taskbar's notification area.
+

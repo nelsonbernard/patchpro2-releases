@@ -5,14 +5,16 @@
 <h1 align="center">PatchPro 2</h1>
 
 <p align="center">
-  A patchbay for your Linux desktop audio: route any app, microphone or device to any output,<br>
-  build virtual mixes, and switch between saved setups. Built for PipeWire.
+  A patchbay for your desktop audio on Linux and Windows: route any app, microphone or device to any<br>
+  output, build virtual mixes, and switch between saved setups. Built for PipeWire and Windows 10/11.
 </p>
 
 <p align="center">
   <a href="https://github.com/nelsonbernard/patchpro2-releases/releases/latest"><b>Download the latest release</b></a>
   &nbsp;·&nbsp;
   <a href="docs/USER-GUIDE.md">User Guide</a>
+  &nbsp;·&nbsp;
+  <a href="CHANGELOG.md">What's new</a>
   &nbsp;·&nbsp;
   <a href="https://github.com/nelsonbernard/patchpro2-releases/issues">Report a bug</a>
 </p>
@@ -48,25 +50,33 @@ While it runs, it is the router; when you quit it, your system's normal routing 
   A browser can be shown as one device per tab. New apps start on your default output (or default input for
   recording apps).
 - **Virtual sinks:** software devices you create, rename and route. They live while PatchPro runs and come back
-  with your setup.
+  with your setup. (On Windows: one virtual sink through the free VB-Audio Virtual Cable.)
 - **Volume and mute** for hardware, apps and virtual sinks, using the same volume curve as your system's sliders.
 - **Real meters:** level bars and a 32-band spectrum for every device, updated live.
 - **Scenes:** your setup is saved automatically and restored when PatchPro starts. Save named scenes and switch
   between them from the title bar or the tray.
-- **System default devices:** set the default output and input from PatchPro.
+- **System default devices:** set the default output and input from PatchPro (on Windows also the
+  communications devices used by voice chat).
+- **Hide devices** you don't use (Voicemeeter's many devices start hidden on Windows).
 - **Tray icon:**
   - show or hide the window, switch scenes, mute, quit;
   - the close button can hide PatchPro to the tray, so routing keeps running.
-- **Global mute hotkey:** mute your microphone (or any device you choose) from anywhere, also on Wayland.
+- **Global mute hotkey:** mute your microphone (or any device you choose) from anywhere, also on Wayland and
+  Windows.
 - **Start at login** and **start minimized**.
 - **Diagnostics:** a log file and a "Copy diagnostics" button for bug reports. Nothing is sent anywhere.
 - **Update notices:** a daily check for new releases (can be turned off). PatchPro never updates itself.
+
+On Windows a few things work differently (how routes are carried out, one virtual sink, percent volumes): see
+[PatchPro on Windows](docs/USER-GUIDE.md#22-patchpro-on-windows).
 
 | Console | Matrix |
 |---|---|
 | ![Console view](docs/images/console.png) | ![Matrix view](docs/images/matrix.png) |
 
 ## Requirements
+
+**Linux**
 
 - 64-bit Linux with **PipeWire** and **WirePlumber** running. This is the default sound system on most current
   distributions (Fedora, Ubuntu 22.10+, Debian 12+, Arch, openSUSE).
@@ -75,11 +85,19 @@ While it runs, it is the router; when you quit it, your system's normal routing 
   the tray icon and global hotkey depend on your desktop (see the
   [User Guide](docs/USER-GUIDE.md#desktop-support)).
 
+**Windows**
+
+- Windows 10 22H2 or Windows 11, 64-bit.
+- For a virtual sink: [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) (free). See
+  [PatchPro on Windows](docs/USER-GUIDE.md#22-patchpro-on-windows) for how routing works there.
+- Voicemeeter is not needed. PatchPro hides its devices and avoids conflicts with it, but we recommend
+  uninstalling Voicemeeter (keep VB-Audio Virtual Cable, a separate product).
+
 ## Install
 
 Download the latest release from the [Releases page](https://github.com/nelsonbernard/patchpro2-releases/releases/latest).
 
-**AppImage (any distribution)**
+**Linux: AppImage (any distribution)**
 
 ```sh
 chmod +x PatchPro2-*-x86_64.AppImage
@@ -89,13 +107,19 @@ chmod +x PatchPro2-*-x86_64.AppImage
 AppImages need FUSE 2: `sudo apt install libfuse2t64` on Ubuntu 24.04+, `sudo dnf install fuse-libs` on Fedora,
 `sudo pacman -S fuse2` on Arch.
 
-**Debian / Ubuntu (.deb)**
+**Linux: Debian / Ubuntu (.deb)**
 
 ```sh
 sudo apt install ./PatchPro2-*-amd64.deb
 ```
 
-Then start **PatchPro 2** from your application menu. The [User Guide](docs/USER-GUIDE.md) walks you through the
+**Windows**
+
+Run `PatchPro2-Setup-…-x64.exe` (installs for your user, no administrator rights), or extract
+`PatchPro2-…-x64-portable.zip` (right-click › Extract All) and run `patchpro2.exe`. The files are not signed yet:
+if SmartScreen warns, click **More info › Run anyway**.
+
+Then start **PatchPro 2** from your application menu (Start menu on Windows). The [User Guide](docs/USER-GUIDE.md) walks you through the
 first steps.
 
 ## Help and bug reports
