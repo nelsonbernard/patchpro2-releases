@@ -614,8 +614,9 @@ Run anyway**.
   itself. Copies are heard about 60 ms after the app's own output (through the virtual cable, about 110 ms):
   fine for streaming and monitoring, noticeable if you listen to both at once.
 - **An app with no routes** is muted (Windows has no "nowhere" device).
-- **Apps that choose a fixed device** (some games and voice apps) only move when they restart. PatchPro marks
-  them with **Restart the app to apply**.
+- **Apps that choose a fixed device** (some games) only move when they restart. PatchPro marks them with
+  **Restart the app to apply**. Voice apps such as Discord follow right away: leave their input and output on
+  "Default" in the app's own settings.
 - **Recording:** an app records from one device (an input or the virtual sink). To give an app a mix, route the
   sources into the virtual sink and the virtual sink into the app.
 

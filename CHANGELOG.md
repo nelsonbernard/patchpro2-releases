@@ -9,6 +9,17 @@ What changed in each PatchPro 2 release. The newest version is at the top. Downl
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-06
+
+Voice apps on Windows now follow your routes.
+
+### Fixed
+
+- **Windows:** voice apps such as Discord now follow PatchPro's routes right away, for their microphone and their
+  sound (PatchPro also sets the app's communications device, which they use): for example Discord recording a
+  mix from the virtual cable.
+- **Windows:** recording apps that only switch input when they start now get the "Restart the app to apply" hint.
+
 ## [0.4.0] - 2026-10-06
 
 Every scene now keeps its own look, hiding a device no longer loses its routes, and the window makes better use
