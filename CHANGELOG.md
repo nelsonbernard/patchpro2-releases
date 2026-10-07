@@ -7,7 +7,47 @@ What changed in each PatchPro 2 release. The newest version is at the top. Downl
 <!-- Release notes: CI uses the section for the tagged version as the release's description. Add changes under
 "Unreleased" as they are made; at release time rename it to "## [x.y.z] - YYYY-MM-DD". -->
 
-## [Unreleased]
+## [0.5.0] - 2026-10-06
+
+Voice chat apps such as Discord are now one violet card with a microphone side and a sound side, with a
+step-by-step setup guide; Windows supports every VB-Audio cable as its own virtual sink; and cables no longer blink
+while you talk.
+
+### New
+
+- **Windows: more virtual sinks.** Every VB-Audio virtual cable you install becomes its own virtual sink: the free
+  VB-CABLE plus the A+B and C+D packs ("Virtual Cable", "Virtual Cable A", …), each with its own name and volume.
+  Scenes never install or remove cables; a scene that uses a cable this PC doesn't have says so.
+- **Apps that play and record are one card:** a voice chat app such as Discord appears in the Graph as one
+  violet card instead of two: connect what it should hear (your microphone, a virtual sink) to its left port and
+  its sound to an output from its right port. Each side keeps its own level and volume. While the app plays or
+  records nothing, that side shows as idle (the card stays together); a side with nothing connected says so and
+  what to connect. New cards start in the middle column, and the **?** legend lists the new color.
+- **Voice chat setup guide:** a new User Guide section walks through setting up Discord (and Teams, Zoom) step by
+  step, on Windows and Linux.
+- **Windows: voice chat device notice.** When Windows' communications device (what Discord and other voice apps
+  use on "Default") differs from the default device, a notice says so; **Match** makes them the same and keeps it
+  after PatchPro quits.
+
+### Changed
+
+- **One inspector for a voice chat app:** clicking a violet card shows the app by its name with both sides
+  (Microphone and Sound: levels, faders, routes, hints), the clicked side highlighted; **Hide this app** hides both.
+- **Clearer names for app recordings:** "Discord (capture)" is now "Discord · recording"; the two sides of a violet
+  card are listed as "Discord · microphone" and "Discord · sound", in violet like the card: the Console gives them
+  their own **Apps (play & record)** group (microphone, then sound), and the Matrix marks them "receives ↓" (a
+  column) and "sends →" (a row).
+- **Voice chat apps in the device list:** a new violet **Apps (play & record)** section lists each one once (with its
+  microphone and sound levels), and the **Hidden** list shows a hidden app once; showing it brings both sides back.
+- **Steady cables:** a cable (and a Matrix crosspoint) stays lit for 1.5 seconds after its sound stops, so a
+  microphone route no longer blinks between words.
+- **The inspector opens on a click only:** moving a card or drawing a cable no longer opens it over the area you
+  are working in.
+- **Windows:** recording apps (such as "OBS · recording") show a moving level bar where the spectrum would be,
+  so you can see the audio they receive.
+- **Windows:** the hint for an app that did not follow its route now says what to do: set the app's device to
+  **Default** in its own settings, or restart it (restarting alone does not help when the app is set to a specific
+  device, such as Discord's input set to your microphone).
 
 ## [0.4.1] - 2026-10-06
 

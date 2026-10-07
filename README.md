@@ -49,14 +49,16 @@ While it runs, it is the router; when you quit it, your system's normal routing 
 - **Apps as devices:** every app that plays or records audio appears on its own and can be routed like a device.
   A browser can be shown as one device per tab (Linux). New apps start on your default output (or default input for
   recording apps).
+- **Voice chat apps** (Discord, Teams, Zoom) are one violet card: connect your microphone to its left side and its
+  sound from its right side; one inspector, one entry in every list.
 - **Virtual sinks:** software devices you create, rename and route. They live while PatchPro runs and come back
-  with your setup. (On Windows: one virtual sink through the free VB-Audio Virtual Cable.)
+  with your setup. (On Windows: one per VB-Audio virtual cable installed: the free one, A+B and C+D packs.)
 - **Volume and mute** for hardware, apps and virtual sinks, using the same volume curve as your system's sliders.
 - **Real meters:** level bars and a 32-band spectrum for every device, updated live.
 - **Scenes:** your setup is saved automatically and restored when PatchPro starts. Save named scenes and switch
   between them from the title bar or the tray.
 - **System default devices:** set the default output and input from PatchPro (on Windows also the
-  communications devices used by voice chat).
+  communications devices used by voice chat, with a notice when they differ from the defaults).
 - **Hide devices** you don't use (Voicemeeter's many devices start hidden on Windows).
 - **Tray icon:**
   - show or hide the window, switch scenes, mute, quit;
@@ -67,7 +69,7 @@ While it runs, it is the router; when you quit it, your system's normal routing 
 - **Diagnostics:** a log file and a "Copy diagnostics" button for bug reports. Nothing is sent anywhere.
 - **Update notices:** a daily check for new releases (can be turned off). PatchPro never updates itself.
 
-On Windows a few things work differently (how routes are carried out, one virtual sink, percent volumes): see
+On Windows a few things work differently (how routes are carried out, virtual sinks are VB-Audio cables, percent volumes): see
 [PatchPro on Windows](docs/USER-GUIDE.md#22-patchpro-on-windows).
 
 | Console | Matrix |
@@ -83,12 +85,12 @@ On Windows a few things work differently (how routes are carried out, one virtua
 - The release builds run on Ubuntu 24.04 / Debian 13 and newer, and on current rolling distributions.
 - Tested on KDE Plasma 6 (Wayland) with PipeWire 1.6 and WirePlumber 0.5. Other desktops should work for routing;
   the tray icon and global hotkey depend on your desktop (see the
-  [User Guide](docs/USER-GUIDE.md#desktop-support)).
+  [User Guide](docs/USER-GUIDE.md#19-desktop-support)).
 
 **Windows**
 
 - Windows 10 22H2 or Windows 11, 64-bit.
-- For a virtual sink: [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) (free). See
+- For virtual sinks: [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) (free; the A+B and C+D packs add more). See
   [PatchPro on Windows](docs/USER-GUIDE.md#22-patchpro-on-windows) for how routing works there.
 - Voicemeeter is not needed. PatchPro hides its devices and avoids conflicts with it, but we recommend
   uninstalling Voicemeeter (keep VB-Audio Virtual Cable, a separate product).

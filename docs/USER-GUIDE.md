@@ -27,10 +27,11 @@ Everything in this guide applies to both systems. Where Windows differs, a **Win
 16. [Settings reference](#16-settings-reference)
 17. [Keyboard and mouse reference](#17-keyboard-and-mouse-reference)
 18. [Where PatchPro keeps its files](#18-where-patchpro-keeps-its-files)
-19. [Desktop support](#desktop-support)
+19. [Desktop support](#19-desktop-support)
 20. [Troubleshooting](#20-troubleshooting)
 21. [Uninstalling](#21-uninstalling)
 22. [PatchPro on Windows](#22-patchpro-on-windows)
+23. [Voice chat apps (Discord, Teams, Zoom)](#23-voice-chat-apps-discord-teams-zoom)
 
 ---
 
@@ -48,7 +49,7 @@ On Linux, PatchPro needs:
   ```
   Both should say `active (running)`.
 - **Tested setup:** KDE Plasma 6 on Wayland, PipeWire 1.6, WirePlumber 0.5. Routing works the same everywhere;
-  the tray icon and global hotkey depend on your desktop ([Desktop support](#desktop-support)).
+  the tray icon and global hotkey depend on your desktop ([Desktop support](#19-desktop-support)).
 
 PatchPro **controls the routing** of your system's audio. It does not add effects or process the sound itself.
 
@@ -98,7 +99,7 @@ When PatchPro starts, it **takes over routing**:
 
 When PatchPro **quits** (or crashes), your system's normal routing comes back on its own: every app returns to
 the default device. PatchPro's virtual sinks only exist while it runs; they come back next time from your saved
-setup ([Scenes](#13-scenes)).
+setup ([Scenes](#13-scenes)). (On Windows, virtual sinks are installed VB-Audio cables, which are always there.)
 
 > A brand-new app may be heard on the default device for a split second before PatchPro routes it. That's
 > expected.
@@ -114,10 +115,12 @@ each app's own device choice and the default devices you had when it started
 | Area | What it shows |
 |---|---|
 | **Title bar** | <ul><li>The **scenes menu** (shows the active scene, or "Current setup").</li><li>The **view switcher**: Graph, Console, Matrix.</li><li>Live audio stats: **Rate** (sample rate), **Buffer** (samples per cycle), **Latency** (buffer time).</li><li>The **engine status** (Running, Starting, Restarting, Waiting, Failed; hover for details).</li><li>The **Settings** gear and the window buttons.</li></ul> |
-| **Device list** (left) | Every device grouped as Inputs, Virtual sinks and Outputs, with a live level bar. "DEFAULT" marks the system default output and input; a red speaker icon marks a muted device. Click a device to select it. **New virtual sink** at the bottom. |
+| **Device list** (left) | Every device grouped as Inputs, Virtual sinks, **Apps (play & record)** (violet: each voice chat app once, with its microphone and sound levels) and Outputs, with a live level bar. "DEFAULT" marks the system default output and input; a red speaker icon marks a muted device. Click a device to select it. **New virtual sink** at the bottom. |
 | **Main area** | The current view: Graph, Console or Matrix ([The three views](#8-the-three-views)). |
 | **Inspector** (right) | Slides in over the right side when you select a device or cable, with its details and controls ([The inspector](#9-the-inspector)). Hidden when nothing is selected, so the view uses the whole window. |
-| **Status bar** (bottom) | How many devices and routes there are, how many routes are carrying sound right now, and a hint for the current view. The **?** at the right shows the color legend and the keyboard shortcuts. |
+| **Status bar** (bottom) | How many devices and routes there are, how many routes are carrying sound right now, and a hint for the current view. The **?** at the right shows the color legend (including the violet **Apps (play & record)**) and the keyboard shortcuts. |
+
+![The color legend and shortcuts, opened from the ? in the status bar](images/legend.png)
 
 If the audio engine is not running, a banner under the title bar says why and what to do
 ([Troubleshooting](#20-troubleshooting)). Double-click empty space in the title bar to maximize or restore the
@@ -125,16 +128,20 @@ window.
 
 ## 5. Devices
 
-PatchPro shows three kinds of devices. Their colors follow you through every view:
+PatchPro shows three kinds of devices, plus a violet color for apps that play and record. Their colors follow you
+through every view:
 
 | Kind | Color | What it is | Ports |
 |---|---|---|---|
 | **Input** (orange) | 🟠 | Something that produces sound: a microphone, a capture card, or an **app** that plays sound (browser, game, music player). | One output port (right side). |
 | **Virtual sink** (white) | ⚪ | A software device you create: it receives sound like an output and sends it on like an input. Use it to combine sources. | Input port (left) and output port (right). |
-| **Output** (teal) | 🔵 | Somewhere sound goes: headphones, speakers, HDMI, or an **app** that records (Discord's microphone, OBS, a recorder). | One input port (left side). |
+| **Output** (teal) | 🔵 | Somewhere sound goes: headphones, speakers, HDMI, or an **app** that records (OBS, a recorder: "OBS · recording"). | One input port (left side). |
+| **App that plays and records** (violet) | 🟣 | A voice chat app (Discord, Teams, Zoom): one card for its two sides, what it hears (its microphone) and its sound. See [Voice chat apps](#23-voice-chat-apps-discord-teams-zoom). | Input port (left: what it hears) and output port (right: its sound). |
 
 Apps appear and disappear as they start and stop. PatchPro remembers their routes and volume, so an app that
 restarts goes back where it was.
+
+![The Hidden list at the bottom of the device list](images/hidden.png)
 
 **Hiding devices:** select a device you don't use and click **Hide this device** at the bottom of the
 inspector. It disappears from every view, and its routes are **paused**: they stay part of your setup but carry
@@ -179,6 +186,8 @@ hear nothing, check that it has a cable.
     ([Settings](#16-settings-reference)).
   - **Windows:** the recordings aren't listed anywhere, but Windows may show its microphone icon while the window
     is visible. There is no Privacy setting.
+  - **Windows:** an app that records (for example "OBS · recording") shows a level bar instead of a spectrum:
+    Windows reports only how loud the audio it receives is.
 
 ## 8. The three views
 
@@ -192,18 +201,24 @@ Device cards in three columns (inputs, virtual sinks, outputs) with cables betwe
 
 - Drag a card by its header to arrange your layout; PatchPro remembers where you put each card.
 - Each card has a spectrum, a fader, a mute button, and the device's format (sample rate, mono/stereo).
-- Cables carrying sound are bright, with dots moving along them; silent routes are faint and dashed.
+- Cables carrying sound are bright, with dots moving along them; silent routes are faint and dashed. A cable
+  stays bright for 1.5 seconds after its sound stops, so a microphone doesn't blink between words.
+- An app that plays **and** records (voice chat such as Discord) is one **violet** card: what it should hear goes
+  into its left port, its sound comes out of its right port. A new one starts in the middle column (see
+  [Voice chat apps](#23-voice-chat-apps-discord-teams-zoom)).
 
 ### Console
 
 ![Console view](images/console.png)
 
-A mixing desk: one strip per device, grouped as inputs, virtual sinks and outputs.
+A mixing desk: one strip per device, grouped as inputs, virtual sinks, apps that play and record, and outputs.
 
 - **SEND TO** (inputs and virtual sinks) and **RECEIVE FROM** (outputs) list every possible route as a button.
   Click a button to connect or disconnect; lit buttons are active routes.
 - Tall faders with a dB scale, a live level bar, and a **MUTE** button.
 - Faders work with the mouse or the arrow keys (click a fader, then press ↑/↓).
+- **Apps (play & record)** (violet) holds each voice chat app's two strips: its **microphone** (RECEIVE FROM: what
+  it hears) first, then its **sound** (SEND TO).
 - **+ New sink** (between the groups) creates a virtual sink.
 
 ### Matrix
@@ -214,12 +229,15 @@ A grid with sources as rows and destinations as columns. Each crosspoint is a po
 or disconnect. Filled crosspoints are active routes; a slash marks combinations that cannot be routed (a virtual
 sink into itself). Rows and columns have their own faders and mute buttons. **+ Sink** adds a virtual sink.
 
+A voice chat app's two sides are violet: its microphone is a column marked **receives ↓** (what you route into it
+is what the app hears), its sound a row marked **sends →**.
+
 ## 9. The inspector
 
 ![The inspector with a virtual sink selected](images/inspector.png)
 
 Select a device (click its card, its name in the device list, or its row/strip) and the inspector slides in over
-the right side of the window; the view underneath doesn't move. Close it with **✕**, **Esc**, or a click on empty
+the right side of the window (moving a card or drawing a cable doesn't open it); the view underneath doesn't move. Close it with **✕**, **Esc**, or a click on empty
 space. It shows and changes:
 
 | Section | What it does |
@@ -230,7 +248,7 @@ space. It shows and changes:
 | **Gain** | Volume fader and mute button. |
 | **Default output / Default input** | For outputs, virtual sinks and inputs: **Set as default** makes it the system default (see [Default devices](#12-default-devices)). **Windows:** also **Use for communications**. |
 | **Streams** | For apps: the **One device per stream** switch (not on Windows; see [Apps and browser tabs](#11-apps-and-browser-tabs)). |
-| **Restart *app* to apply its routes** | **Windows**, for apps that chose a fixed device: they move only when they start again. |
+| **Set its device to Default, or restart it** | **Windows**, for apps that still play on (or record from) a device they opened themselves: choose **Default** as the app's output (or input) in its own settings, or restart the app (Windows moves it only when it starts again). An app set to a specific device in its own settings keeps using that device. |
 | **Receives from / Sends to** | Every route into and out of the device. Click **×** to remove one. |
 | **Delete virtual sink** | For virtual sinks: removes it and its routes (not on Windows). |
 | **Hide this device** | Hides the device and pauses its routes (see [Devices](#5-devices)). |
@@ -260,11 +278,14 @@ How to:
 - **Delete:** select it and click **Delete virtual sink** (or press **Delete**). Apps that played only into it
   go silent (they are not paused) until you route them somewhere else.
 
-Virtual sinks exist only while PatchPro runs. When PatchPro starts, it recreates them from your saved setup.
+Virtual sinks exist only while PatchPro runs (Linux). When PatchPro starts, it recreates them from your saved setup.
 
-**Windows:** virtual sinks need [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) (free) installed. PatchPro
-shows it as **one** virtual sink: you can rename it, set its volume and route into and out of it, but not create
-or delete virtual sinks. Other apps see it as "CABLE Input" (to play into) and "CABLE Output" (to record from).
+**Windows:** virtual sinks are [VB-Audio's virtual cables](https://vb-audio.com/Cable/), installed separately:
+the free **VB-CABLE** gives one, and VB-Audio's **A+B** and **C+D** packs (donationware) add two each. PatchPro
+shows each cable as a virtual sink ("Virtual Cable", "Virtual Cable A", …): you can rename it, set its volume and
+route into and out of it, but not create or delete virtual sinks in PatchPro; install another cable instead. Other
+apps see a cable as "CABLE Input" (to play into) and "CABLE Output" (to record from), or "CABLE-A Input" and
+"CABLE-A Output" for pack cables.
 
 ## 11. Apps and browser tabs
 
@@ -278,6 +299,13 @@ to your stream mix.
 - When you split an app, every stream starts with the app's routes.
 - New streams of a split app (a newly opened tab) also get the app's routes.
 - Turning the switch off brings the app back to the routes it had before you split it.
+
+An app's recording side is named "*app* · recording" (for example "OBS · recording").
+
+**Apps that play and record** (Discord, Teams, Zoom) are shown in the Graph as one violet card with both sides,
+one entry in the device list (**Apps (play & record)**) and one inspector for both: see
+[Voice chat apps](#23-voice-chat-apps-discord-teams-zoom). The Console and Matrix list the two sides separately as
+"Discord · microphone" and "Discord · sound".
 
 **New apps** start on your default output (recording apps listen to your default input). Change the default to
 change where new apps go.
@@ -299,6 +327,10 @@ default output. "DEFAULT" in the device list marks the current ones.
 **Windows:** there is also a **communications** output and input, which voice chat apps use. Set them with **Use
 for communications**; a "comms" badge marks them. When PatchPro quits, Windows' default devices go back to what
 they were when it started.
+
+**Windows:** when the communications device differs from the default device, a violet notice under the title bar
+says so. **Match** makes the communications device the same as the default (and keeps it after PatchPro quits);
+**✕** hides the notice until the devices involved change.
 
 ## 13. Scenes
 
@@ -322,8 +354,9 @@ Open the scenes menu in the title bar (it shows the active scene's name, or "Cur
 - **Save:** type a name in "Save current setup as…" and click **Save**. Saving under an existing name replaces
   that scene.
 - **Load:** click a scene. PatchPro creates or removes virtual sinks, changes routes, sets volumes, and switches
-  to the scene's hidden devices, card positions and view. A checkmark shows the active scene. You can also switch
-  scenes from the tray menu.
+  to the scene's hidden devices, card positions and view. **Windows:** scenes never install or remove VB-Audio
+  cables; if a scene uses a cable that isn't installed on this computer, PatchPro says so. A checkmark shows the
+  active scene. You can also switch scenes from the tray menu.
 - **Changes go into a scene only when you save them.** After you load a scene and change something, a dot (•)
   next to its name in the title bar shows it has unsaved changes. To keep them, click the **save icon** right
   beside the name (or **Update** in the menu); with no scene active, the save icon asks for a name. Or **save
@@ -436,7 +469,7 @@ PatchPro may also create, depending on your settings and desktop:
     back from the tray where you left it;
   - the shortcut "Mute or unmute (PatchPro 2)" in System Settings › Shortcuts.
 
-## Desktop support
+## 19. Desktop support
 
 Routing, volume, meters and scenes work on any desktop with PipeWire and WirePlumber. Desktop integration varies:
 
@@ -518,7 +551,7 @@ seen before go where they were routed last time.
 ### The mute hotkey does nothing
 
 - Settings › Mute should say **Active**. If it shows an error, read it: on Wayland your desktop needs the
-  GlobalShortcuts portal ([Desktop support](#desktop-support)).
+  GlobalShortcuts portal ([Desktop support](#19-desktop-support)).
 - **KDE:**
   - open System Settings › Shortcuts and find **PatchPro 2**;
   - the shortcut must be assigned, and no other action should use the same keys;
@@ -587,12 +620,13 @@ audio as it normally does.
 ### Requirements
 
 - **Windows 10 22H2 or Windows 11**, 64-bit (x64).
-- For a virtual sink: **[VB-Audio Virtual Cable](https://vb-audio.com/Cable/)** (free) installed. Without it,
-  everything else works; you just have no virtual sink.
+- For virtual sinks: **[VB-Audio Virtual Cable](https://vb-audio.com/Cable/)** (free) installed; each cable is one
+  virtual sink, and VB-Audio's optional **A+B** and **C+D** packs add more. Without any, everything else works; you
+  just have no virtual sinks.
 - **Voicemeeter is not needed.** PatchPro does the routing itself. It hides Voicemeeter's many devices and avoids
   conflicts with them, but we recommend uninstalling Voicemeeter (Settings › Apps › Installed apps) so two
   routers don't fight over your audio. Keep **VB-Audio Virtual Cable**: it's a separate product, and PatchPro
-  uses it as its virtual sink.
+  uses its cables as virtual sinks.
 
 ### Installing on Windows
 
@@ -610,22 +644,28 @@ Run anyway**.
 
 - **An app to one output:** PatchPro sets the app's own output device, the same setting as Windows' Settings ›
   Sound › Volume mixer. Windows moves the app itself, with no added delay.
-- **An app to several outputs, microphones to outputs, the virtual sink to outputs:** PatchPro copies the audio
+- **An app to several outputs, microphones to outputs, a virtual sink to outputs:** PatchPro copies the audio
   itself. Copies are heard about 60 ms after the app's own output (through the virtual cable, about 110 ms):
   fine for streaming and monitoring, noticeable if you listen to both at once.
 - **An app with no routes** is muted (Windows has no "nowhere" device).
-- **Apps that choose a fixed device** (some games) only move when they restart. PatchPro marks them with
-  **Restart the app to apply**. Voice apps such as Discord follow right away: leave their input and output on
-  "Default" in the app's own settings.
-- **Recording:** an app records from one device (an input or the virtual sink). To give an app a mix, route the
-  sources into the virtual sink and the virtual sink into the app.
+- **Apps that choose a fixed device** (some games) only move when they restart, and an app set to a specific
+  device in its own settings (for example Discord's input set to your microphone) keeps using it. PatchPro marks
+  them with **set its input (or output) to Default in its settings, or restart it**. Voice apps such as Discord follow right away when their
+  input and output are on "Default" in the app's own settings.
+- **Recording:** an app records from one device (an input or a virtual sink). To give an app a mix, route the
+  sources into a virtual sink and that virtual sink into the app.
 
 ### Differences from Linux
 
-- **One virtual sink:** VB-Cable is shown as one virtual sink (its two sides as one device). You can rename it,
-  set its volume and route through it; you can't create or remove virtual sinks.
+- **Virtual sinks are VB-Audio cables:** each installed cable (free VB-CABLE, A+B and C+D packs) is one virtual
+  sink (its two sides as one device). You can rename them, set their volume and route through them; you can't
+  create or remove virtual sinks in PatchPro.
 - **Volumes are in percent**, like Windows' own sliders.
 - **Default devices** include the **communications** output and input (used by calls) besides the normal ones.
+  When the communications device differs from the default one, a violet notice offers **Match** (kept after
+  PatchPro quits) or **✕** ([Default devices](#12-default-devices)).
+- **Voice chat apps** (Discord, Teams, Zoom) follow PatchPro's routes when their input and output are on "Default"
+  in their own settings: see [Voice chat apps](#23-voice-chat-apps-discord-teams-zoom) for a step-by-step setup.
 - **Apps appear once they play or record** (Windows keeps silent sessions for many apps), or when you route them.
   System sounds follow the default output and can't be routed.
 - **Voicemeeter's devices are hidden** by default (there are many). Show them from the sidebar's **Hidden** list.
@@ -653,11 +693,15 @@ Settings, scenes, layout and logs are in `%APPDATA%\PatchPro 2\` (`settings.json
 ### Troubleshooting on Windows
 
 - **SmartScreen blocks the setup or the app:** click **More info › Run anyway** (the files are not signed yet).
-- **No virtual sink:** install [VB-Audio Virtual Cable](https://vb-audio.com/Cable/), restart your PC if its
-  installer asks, then start PatchPro again.
-- **An app doesn't move when you route it:** if its card says **Restart *app* to apply its routes**, the app chose
-  a fixed device; close and reopen it. Some apps have their own output setting (games, Discord's voice settings):
-  set it to "Default" there so PatchPro can move them.
+- **No virtual sink:** install [VB-Audio Virtual Cable](https://vb-audio.com/Cable/) (and the A+B / C+D packs for
+  more), restart your PC if its installer asks, then start PatchPro again.
+- **A scene says a virtual sink "is not installed on this computer":** the scene uses a VB-Audio cable this PC
+  doesn't have. Install that cable pack, or route through another cable and save the scene again.
+- **Discord (or another voice app) doesn't follow its routes:** set its input and output to "Default" in its own
+  settings and make the communications devices match ([Voice chat apps](#23-voice-chat-apps-discord-teams-zoom)).
+- **An app doesn't move when you route it:** if its card says **set its device to Default in its settings, or
+  restart it**, the app uses a device it chose itself. Set its output (or input) to "Default" in the app's own
+  settings (games, Discord's Voice & Video); if it has no such setting, close and reopen it.
 - **An app is silent:** an app with no routes is muted on Windows. Give it a route, or quit PatchPro to let Windows
   play it normally.
 - **An app plays on the wrong device after PatchPro quit:** Settings › System › Sound › Volume mixer shows each
@@ -667,3 +711,71 @@ Settings, scenes, layout and logs are in `%APPDATA%\PatchPro 2\` (`settings.json
   ([Requirements](#requirements)).
 - **No tray icon:** it may be under the **^** arrow in the taskbar's notification area.
 
+## 23. Voice chat apps (Discord, Teams, Zoom)
+
+![A voice chat app's violet card and its inspector](images/voice-app.png)
+
+A voice chat app both records (your microphone, sent to the others) and plays (the others' voices). In the Graph
+it is one **violet** card:
+
+- **Left port: what the app hears.** Connect your microphone here (or a virtual sink, to send a mix).
+- **Right port: the app's sound.** Connect it to your headphones or speakers.
+- Each side has its own level and fader: **Microphone** (how loud you are sent) and **Sound** (how loud you hear
+  the others).
+- A side with **nothing connected** says so: the app hears silence, or you don't hear it.
+- A side the app isn't using right now (it hasn't joined a call yet) shows as idle; its routes come back when it
+  does.
+- Click anywhere on the card to open its inspector: both sides with their levels, faders and routes, the side you
+  clicked highlighted. **Hide this app** hides both sides; the **Hidden** list shows the app once, and showing it
+  brings both sides back.
+- This applies to every app that plays and records (Discord, Teams, Zoom, a game's voice chat), as soon as PatchPro
+  has seen both of its sides.
+
+### Setting up Discord, step by step
+
+1. **Windows:** Settings › System › Sound › **More sound settings** › **Communications** tab: choose **Do nothing**
+   and click **OK** (otherwise Windows lowers all other sounds by 80% during calls).
+2. **Windows:** make your headphones and your microphone both the default and the communications device: click
+   each card in PatchPro, then **Set as default** and **Use for communications** in the inspector (or click
+   **Match** if PatchPro shows the notice). Discord's "Default" is Windows' **communications** device.
+3. **In Discord:** User Settings › **Voice & Video**: set **Input Device** and **Output Device** to **Default**,
+   and both volumes to 100% (use PatchPro's faders instead). Optional: **Advanced › Attenuation** at 0%.
+4. **Windows:** quit Discord from its tray icon (**Quit Discord**; closing the window keeps it running) and start it
+   again, so it opens "Default".
+5. Join a voice channel, or click **Let's Check** under Voice & Video › Mic Test: the violet **Discord** card
+   appears.
+6. Drag from your **microphone** to the Discord card's **left port**. Its Microphone level moves when you talk.
+7. Drag from the Discord card's **right port** to your **headphones**.
+8. Test with Discord's **Mic Test**: you hear yourself.
+
+**On Linux**, steps 1, 2 and 4 are not needed.
+
+**Why "Default" matters (Windows):** PatchPro moves an app by giving it its own device in Windows, which works for
+apps that use "Default". An app set to a specific device in its own settings (for example Discord's input set to
+your microphone) keeps using that device, even after a restart; its card then says **set its input to Default in
+its settings, or restart it**.
+
+### More setups
+
+- **Send your microphone and music (or a game) to the call:** route the microphone and the app into a virtual sink,
+  then the virtual sink into the voice app's left port. A voice app records one device, so a mix goes through a
+  virtual sink. On Windows this needs [VB-Audio Virtual Cable](https://vb-audio.com/Cable/).
+- **Hear the call on two outputs:** connect the right port to both. On Windows the second one is about 60 ms later.
+- **Hear yourself:** route your microphone to your headphones as well.
+
+### Other voice apps
+
+Teams, Zoom, Slack and games' voice chat work the same way: set their microphone and speaker to **Default** (or
+"Same as system") in their own settings, then connect them as above. Most of them, like Discord, use Windows'
+communications device for "Default", so step 2 applies to them too.
+
+### Troubleshooting
+
+| What you see | What to do |
+|---|---|
+| The card says **set its input (or output) to Default in its settings, or restart it** | Step 3, then step 4 if it stays. |
+| The others can't hear you, and the Microphone level doesn't move | Connect your microphone to the left port (step 6); check that neither is muted in PatchPro or in Discord. |
+| The Microphone level moves, but the others can't hear you | Discord's **Input Sensitivity** may be too high (try "Automatically determine"); check push-to-talk. |
+| You hear nobody | Connect the right port (step 7). On Windows a side with no route is muted. |
+| Other sounds get quieter during calls | Step 1, and Discord's Attenuation (step 3). |
+| There is no Discord card | Join a voice channel or start the Mic Test (step 5). |
